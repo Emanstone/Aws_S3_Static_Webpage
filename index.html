@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuel's Fruit Guessing Game</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 50px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #7b1401;
+        }
+        
+        img {
+            max-width: 200px;
+            border: 5px solid #7b1401;
+            border-radius: 15px;
+            margin: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #7b1401;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #7b1401;
+        }
+
+        .result {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        marquee {
+            font-size: 14px;
+            color: #7b1401;
+            font-weight: bold;
+            /* animation: blinker 1.5s linear infinite; */
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Manuel's Guess the Fruit Game!</h1>
+    <p>Can you guess the name of this Amazing fruit?</p>
+    <img id="fruitImage" src="https://example.com/fruit.jpg" alt="Fruit Image">
+    <br>
+    <input type="text" id="guessInput" placeholder="Enter your guess...">
+    <button onclick="checkGuess()">Submit</button>
+    <p class="result" id="resultMessage"></p>
+
+
+    <footer>
+        <marquee>Year: <span id="currentYear"></span> | Page Views: <span id="pageViewCounter"></span> | © <span id="copyYear"></span> Manuel's Fruit Guessing Game</marquee>
+    </footer>
+
+
+    <script>
+        const fruits = [
+            { name: "apple", image: "https://via.placeholder.com/200?text=Apple" },
+            { name: "pear", image: "https://via.placeholder.com/200?text=Pear" },
+            { name: "pineapple", image: "https://via.placeholder.com/200?text=Pineapple" },
+            { name: "mango", image: "https://via.placeholder.com/200?text=Mango" },
+            { name: "banana", image: "https://via.placeholder.com/200?text=Banana" },
+            { name: "orange", image: "https://via.placeholder.com/200?text=Orange" },
+
+        ];
+
+
+        let currentFruitIndex = 0;
+
+
+        function loadFruit() {
+            const fruit = fruits[currentFruitIndex];
+            document.getElementById('fruitImage').src = fruit.image;
+        }
+
+
+        function checkGuess() {
+            const userGuess = document.getElementById('guessInput').value.toLowerCase();
+            const correctAnswer = fruits[currentFruitIndex].name;
+
+
+            if (userGuess === correctAnswer) {
+                document.getElementById('resultMessage').innerText = "Correct! It's " + correctAnswer + "!";
+                currentFruitIndex = (currentFruitIndex + 1) % fruits.length;
+                setTimeout(() => {
+                    document.getElementById('resultMessage').innerText = "";
+                    loadFruit();
+                }, 2000);
+            } else {
+                document.getElementById('resultMessage').innerText = "Oops! Try again.";
+            }
+            document.getElementById('guessInput').value = "";
+        }
+
+
+        function updatePageViewCounter() {
+            if (localStorage.pageViews) {
+                localStorage.pageViews = Number(localStorage.pageViews) + 1;
+            } else {
+                localStorage.pageViews = 1;
+            }
+            document.getElementById('pageViewCounter').innerText = localStorage.pageViews;
+        }
+
+
+        function updateFooterInfo() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('currentYear').innerText = currentYear;
+            document.getElementById('copyYear').innerText = currentYear;
+        }
+
+
+        loadFruit();
+        updatePageViewCounter();
+        updateFooterInfo();
+    </script>
+</body>
+</html>
